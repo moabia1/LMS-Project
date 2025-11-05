@@ -1,6 +1,7 @@
 import User from "../models/user.model.js";
 import bcrypt from "bcryptjs";
 import jwtGenerator from "../utils/jwtToken.js";
+import sendEmail from "../config/sendMail.js";
 
 export const registerController = async (req, res) => {
   const { email, password, username, fullName: { firstName, lastName }, role = "student" } = req.body;
@@ -101,4 +102,66 @@ export const logoutController = async (req, res) => {
   return res.status(201).json({
     message:"User Logout Successfully"
   })
+}
+
+export const sendOtp = async (req, res) => {
+  
+  const { email } = req.body;
+  
+  const user = await User.findOne({ email: email });
+
+  if (!user) {
+    return res.status(404).json({message: "User not found"})
+  }
+
+  const otp = Math.floor(1000 + Math.random() * 9000).toString();
+
+  user.resetOtp = otp;
+  user.otpExpires = Date.now() + 5 * 60 * 1000;
+  user.isOtpVerified = false
+
+  await user.save();
+  await sendEmail(email, otp);
+
+  return res.status(200).json({message: "Otp Send Successfully"})
+}
+
+export const verifyOtp = async (req,res) => {
+  const { email, otp } = req.body;
+  
+  const user = await User.findOne({ email: email });
+
+  if (!user || user.resetOtp != otp || user.otpExpires < Date.now()) {
+    return res.status(404).json({ message: "Invalid OTP" });
+  }
+
+  user.isOtpVerified = true;
+  user.resetOtp = undefined;
+  user.otpExpires = undefined;
+
+  await user.save();
+
+  return res.status(200).json({ message: "Otp Verified Successfully" });
+}
+
+export const resetPassword = async (req, res) => {
+  
+  const { email, password } = req.body;
+  
+  const user = await User.findOne({ email: email });
+  
+  if (!user || !user.isOtpVerified) {
+    return res
+      .status(404)
+      .json({ message: "Something went Wrong Invalid User" });
+  }
+
+  const hashPassword = await bcrypt.hash(password, 10);
+  
+  user.password = hashPassword
+  user.isOtpVerified = false
+
+  await user.save();
+
+  return res.status(200).json({message: "Password Reset Successfully"});
 }

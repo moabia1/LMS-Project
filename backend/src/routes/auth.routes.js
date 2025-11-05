@@ -5,6 +5,9 @@ import {
   loginController,
   logoutController,
   registerController,
+  resetPassword,
+  sendOtp,
+  verifyOtp,
 } from "../controllers/auth.controller.js";
 import passport from "passport";
 import { authMiddleware } from "../middlewares/auth.middleware.js";
@@ -17,12 +20,16 @@ router.post("/register",registerUserValidation,registerController);
 router.post("/login",loginUserValidation,loginController);
 router.get("/logout", logoutController);
 router.get("/get-user", authMiddleware, getUserController)
+router.post("/send-otp",sendOtp);
+router.post("/verify-otp",verifyOtp);
+router.post("/reset-password",resetPassword);
 
+
+// Google-auth routes
 router.get(
   "/google",
   passport.authenticate("google", { scope: ["profile", "email"] })
 );
-
 router.get(
   "/google/callback",
   passport.authenticate("google", { session: false }),

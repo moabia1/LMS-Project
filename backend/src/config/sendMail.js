@@ -21,14 +21,13 @@ transporter.verify((error, success) => {
   }
 });
 
-const sendEmail = async (to, subject, text, html) => {
+const sendEmail = async (to, otp) => {
   try {
     const info = await transporter.sendMail({
       from: `"Skill Nest" <${config.EMAIL_USER}>`, // sender address
-      to, // list of receivers
-      subject, // Subject line
-      text, // plain text body
-      html, // html body
+      to:to,
+      subject: "Reset Your Password",
+      html: `<p>Your OTP for password Reset is <b>${otp}</b>. It expires in 5 minutes`
     });
 
     console.log("Message sent: %s", info.messageId);

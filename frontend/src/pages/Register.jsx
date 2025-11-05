@@ -89,7 +89,7 @@ const Register = () => {
               value={lastName}
               onChange={(e) => setLastName(e.target.value)}
               className="border w-[100%] h-[35px] border-[#e7e6e6] text-[15px] px-5"
-              placeholder="First Name"
+              placeholder="Last Name"
             />
           </div>
 
