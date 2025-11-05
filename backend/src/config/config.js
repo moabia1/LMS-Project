@@ -9,6 +9,8 @@ const _config = {
   JWT_EXPIRE: process.env.JWT_EXPIRE,
   CLIENT_ID: process.env.GOOGLE_CLIENT_ID,
   CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET,
+  EMAIL_USER: process.env.EMAIL_USER,
+  REFRESH_TOKEN: process.env.REFRESH_TOKEN
 };
 
 export default _config

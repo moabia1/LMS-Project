@@ -85,7 +85,10 @@ const Navbar = () => {
 
           {show && (
             <div className="absolute top-[110%] right-[15%] flex items-center flex-col justify-center gap-2 text-[16px] rounded-md bg-white px-[15px] py-2.5 border-2 border-black hover:border-white hover:text-white hover:bg-black cursor-pointer">
-              <span className="bg-black text-white px-[30px] py-2.5 rounded-2xl hover:bg-gray-600">
+              <span
+                onClick={() => navigate("/profile")}
+                className="bg-black text-white px-[30px] py-2.5 rounded-2xl hover:bg-gray-600"
+              >
                 My Profile
               </span>
               <span className="bg-black text-white px-[30px] py-2.5 rounded-2xl hover:bg-gray-600">
@@ -121,7 +124,10 @@ const Navbar = () => {
               </div>
             )}
 
-            <div className="w-[200px] h-[65px] flex items-center justify-center border-2 border-white bg-black text-white rounded-[10px] text-[18px] font-light cursor-pointer">
+            <div
+              onClick={() => navigate("/profile")}
+              className="w-[200px] h-[65px] flex items-center justify-center border-2 border-white bg-black text-white rounded-[10px] text-[18px] font-light cursor-pointer"
+            >
               My Profile
             </div>
 
