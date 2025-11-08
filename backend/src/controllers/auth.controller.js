@@ -1,44 +1,64 @@
 import User from "../models/user.model.js";
 import bcrypt from "bcryptjs";
 import jwtGenerator from "../utils/jwtToken.js";
+import jwt from "jsonwebtoken"
 import sendEmail from "../config/sendMail.js";
+import uploadOnCloudinary from "../storage/cloudinary.js";
+import config from "../config/config.js"
 
 export const registerController = async (req, res) => {
-  const { email, password, username, fullName: { firstName, lastName }, role = "student" } = req.body;
+  const {
+    email,
+    password,
+    username,
+    fullName: { firstName, lastName },
+    role = "student",
+  } = req.body;
 
   const existingUser = await User.findOne({
-    $or:[{username: username}, {email:email}]
-  })
-  
+    $or: [{ username: username }, { email: email }],
+  });
+
   if (existingUser) {
-    return res.status(400).json({message: "User already Exists"})
+    return res.status(400).json({ message: "User already Exists" });
   }
 
   const hashPassword = await bcrypt.hash(password, 10);
-  
+
   const user = await User.create({
     email,
-    password:hashPassword,
+    password: hashPassword,
     username,
     fullName: {
       firstName,
-      lastName
+      lastName,
     },
-    role
-  })
+    role,
+  });
 
   jwtGenerator(user, "User Signup Successfully", 201, res);
 };
 
 export const googleAuthCallback = async (req, res) => {
-  const user = req.user
-  console.log(user)
+  const user = req.user;
+  console.log(user);
   const isUserExists = await User.findOne({
-    $or:[{email: user.emails[0].value},{googleId:user.id}]
-  }) 
+    $or: [{ email: user.emails[0].value }, { googleId: user.id }],
+  });
 
   if (isUserExists) {
-    jwtGenerator(isUserExists,"User loggen in successfully",201,res)
+    const token = jwt.sign({ id: isUserExists._id }, config.JWT_SECRET, {
+      expiresIn: "3d",
+    });
+
+    res.cookie("token", token, {
+      httpOnly: true,
+      maxAge: 3 * 24 * 60 * 60 * 1000,
+      sameSite: "None",
+      secure: true,
+    });
+
+    return res.redirect("http://localhost:5173");
   }
 
   const newUser = await User.create({
@@ -46,89 +66,97 @@ export const googleAuthCallback = async (req, res) => {
     email: user.emails[0].value,
     fullName: {
       firstName: user.name.givenName,
-      lastName: user.name.familyName
+      lastName: user.name.familyName,
     },
-    username: user.name.givenName,
-    avatar:user.photos.value
-  })
+    username: user.name.familyName.toLowerCase(),
+    avatar: user.photos[0].value,
+  });
 
-  jwtGenerator(newUser,"User registered Successfully",201,res)
-}
+  const token = jwt.sign({ id: newUser._id }, config.JWT_SECRET, {
+      expiresIn:"3d"
+  })
+  
+  res.cookie("token", token, {
+      httpOnly: true,
+      maxAge: 3 * 24 * 60 * 60 * 1000,
+      sameSite: "None",
+      secure: true,
+  })
+  
+  return res.redirect("http://localhost:5173");
+};
 
 export const loginController = async (req, res) => {
   const { identifier, password } = req.body;
-  
+
   const user = await User.findOne({
-    $or:[{email:identifier}, {username:identifier}]
-  })
+    $or: [{ email: identifier }, { username: identifier }],
+  });
 
   if (!user) {
     return res.status(409).json({
-      message: "User not found"
-    })
+      message: "User not found",
+    });
   }
 
-  const validPassword = await bcrypt.compare(password, user.password)
-  
+  const validPassword = await bcrypt.compare(password, user.password);
+
   if (!validPassword) {
     return res.status(400).json({
-      message: "Incorrect Password"
-    })
+      message: "Incorrect Password",
+    });
   }
 
-  jwtGenerator(user,"Login Successfully",201,res)
-}
+  jwtGenerator(user, "Login Successfully", 201, res);
+};
 
 export const getUserController = async (req, res) => {
-  
   const id = req.id;
 
-  const user = await User.findById(id)
+  const user = await User.findById(id);
 
   if (!user) {
-    return res.status(400).json({message: "User not Found"})
+    return res.status(400).json({ message: "User not Found" });
   }
 
-  res.status(201).json(user)
-
-}
+  res.status(201).json(user);
+};
 
 export const logoutController = async (req, res) => {
   res.clearCookie("token", {
     httpOnly: true,
-    secure:true
-  })
+    secure: true,
+  });
 
   return res.status(201).json({
-    message:"User Logout Successfully"
-  })
-}
+    message: "User Logout Successfully",
+  });
+};
 
 export const sendOtp = async (req, res) => {
-  
   const { email } = req.body;
-  
+
   const user = await User.findOne({ email: email });
 
   if (!user) {
-    return res.status(404).json({message: "User not found"})
+    return res.status(404).json({ message: "User not found" });
   }
 
   const otp = Math.floor(1000 + Math.random() * 9000).toString();
 
   user.resetOtp = otp;
   user.otpExpires = Date.now() + 5 * 60 * 1000;
-  user.isOtpVerified = false
+  user.isOtpVerified = false;
 
   await user.save();
   await sendEmail(email, otp);
 
-  return res.status(200).json({message: "Otp Send Successfully"})
-}
+  return res.status(200).json({ message: "Otp Send Successfully" });
+};
 
-export const verifyOtp = async (req,res) => {
+export const verifyOtp = async (req, res) => {
   const { email, otp } = req.body;
-  
+
   const user = await User.findOne({ email: email });
 
   if (!user || user.resetOtp != otp || user.otpExpires < Date.now()) {
@@ -142,14 +170,13 @@ export const verifyOtp = async (req,res) => {
   await user.save();
 
   return res.status(200).json({ message: "Otp Verified Successfully" });
-}
+};
 
 export const resetPassword = async (req, res) => {
-  
   const { email, password } = req.body;
-  
+
   const user = await User.findOne({ email: email });
-  
+
   if (!user || !user.isOtpVerified) {
     return res
       .status(404)
@@ -157,11 +184,47 @@ export const resetPassword = async (req, res) => {
   }
 
   const hashPassword = await bcrypt.hash(password, 10);
-  
-  user.password = hashPassword
-  user.isOtpVerified = false
+
+  user.password = hashPassword;
+  user.isOtpVerified = false;
 
   await user.save();
 
-  return res.status(200).json({message: "Password Reset Successfully"});
-}
+  return res.status(200).json({ message: "Password Reset Successfully" });
+};
+
+export const updateProfile = async (req, res) => {
+
+  try {
+    const userId = req.id;
+
+    const { username, firstName, lastName } = req.body;
+
+    let avatar;
+    if (req.file) {
+      avatar = await uploadOnCloudinary(req.file.path);
+    }
+
+    const updateData = {
+      username,
+      fullName: { firstName, lastName },
+    };
+
+    if (avatar) {
+      updateData.avatar = avatar
+    }
+    
+    const user = await User.findByIdAndUpdate(userId, updateData, {
+      new: true,
+    });
+
+    if (!user) {
+      return res.status(400).json({ message: "User not found" });
+    }
+
+    await user.save()
+    return res.status(200).json(user);
+  } catch (error) {
+    console.log("Profile Updating : ", error);
+  }
+};

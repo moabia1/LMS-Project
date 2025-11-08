@@ -48,7 +48,7 @@ const Navbar = () => {
           {!userData && (
             <IoPersonCircle
               onClick={() => setShow(!show)}
-              className="w-[50px] h-[50px] fill-black cursor-pointer"
+              className="w-[50px] h-[50px] fill-white cursor-pointer"
             />
           )}
 
@@ -57,7 +57,14 @@ const Navbar = () => {
               onClick={() => setShow(!show)}
               className="w-[50px] h-[50px] rounded-full text-white flex items-center justify-center text-[20px] border-2 bg-black border-white cursor-pointer"
             >
-              {userData?.fullName?.firstName.slice(0, 1).toUpperCase()}
+              <img
+                src={
+                  userData?.avatar ||
+                  "https://cdn-icons-png.flaticon.com/512/149/149071.png"
+                }
+                alt="profile"
+                className="w-[50px] h-[50px] rounded-full object-cover"
+              />
             </div>
           )}
 
@@ -99,7 +106,7 @@ const Navbar = () => {
         </div>
         <RxHamburgerMenu
           onClick={() => setShowHam(!showHam)}
-          className="w-[35px] h-[35px] lg:hidden text-black cursor-pointer"
+          className="w-[35px] h-[35px] lg:hidden text-white cursor-pointer"
         />
 
         {showHam && (
@@ -116,11 +123,21 @@ const Navbar = () => {
 
             {/* User Icon */}
             {!userData && (
-              <IoPersonCircle className="w-[50px] h-[50px] fill-black cursor-pointer" />
+              <IoPersonCircle className="w-[50px] h-[50px] fill-white cursor-pointer" />
             )}
             {userData && (
-              <div className="w-[50px] h-[50px] rounded-full text-white flex items-center justify-center text-[20px] border-2 bg-black border-white cursor-pointer">
-                {userData?.fullName?.firstName.slice(0, 1).toUpperCase()}
+              <div
+                onClick={() => setShow(!show)}
+                className="w-[50px] h-[50px] rounded-full text-white flex items-center justify-center text-[20px] border-2 bg-black border-white cursor-pointer"
+              >
+                <img
+                  src={
+                    userData?.avatar ||
+                    "https://cdn-icons-png.flaticon.com/512/149/149071.png"
+                  }
+                  alt="profile"
+                  className="w-[50px] h-[50px] rounded-full object-cover"
+                />
               </div>
             )}
 

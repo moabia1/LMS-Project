@@ -42,7 +42,10 @@ const Login = () => {
 
   return (
     <div className="bg-[#dddbdb] w-[100vw] h-[100vh] flex items-center justify-center">
-      <form onSubmit={submitHandler} className="w-[90%] md:w-200 h-150 bg-[white] shadow-xl rounded-2xl flex">
+      <form
+        onSubmit={submitHandler}
+        className="w-[90%] md:w-200 h-150 bg-[white] shadow-xl rounded-2xl flex"
+      >
         {/* Left Div */}
         <div className="md:w-[50%] w-[100%] flex flex-col items-center justify-center gap-3">
           <div>
@@ -98,12 +101,14 @@ const Login = () => {
           {/* Submit Button */}
           <button
             disabled={loading}
-            className="w-[80%] h-10 bg-black text-white cursor-pointer flex items-center justify-center rounded-[5px]">
-            {loading ? <ClipLoader color='white' size={30}/> :"Login"}
+            className="w-[80%] h-10 bg-black text-white cursor-pointer flex items-center justify-center rounded-[5px]"
+          >
+            {loading ? <ClipLoader color="white" size={30} /> : "Login"}
           </button>
           <span
-            onClick={()=>navigate("/forget")}
-            className="text-[16px] cursor-pointer text-[#585757]">
+            onClick={() => navigate("/forget")}
+            className="text-[16px] cursor-pointer text-[#585757]"
+          >
             Forgot your Password ?
           </span>
 
@@ -117,7 +122,12 @@ const Login = () => {
           </div>
 
           {/* Google icon with button */}
-          <div className="w-[80%] h-10 border border-black rounded-xs flex items-center justify-center hover:border-2 cursor-pointer">
+          <div
+            onClick={() => {
+              window.location.href = "http://localhost:5000/api/auth/google";
+            }}
+            className="w-[80%] h-10 border border-black rounded-xs flex items-center justify-center hover:border-2 cursor-pointer"
+          >
             <img src={google} alt="" className="w-[30px]" />
             <span className="text-[18px] text-gray-500">oogle</span>
           </div>

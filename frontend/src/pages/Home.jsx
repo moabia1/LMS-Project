@@ -2,8 +2,9 @@ import React from "react";
 import Navbar from "../components/Navbar";
 import home from "../assets/home1.jpg";
 import { SiViaplay } from "react-icons/si";
-import searchIcon from "../assets/ai.png"
-import searchIcon1 from "../assets/SearchAi.png"
+import searchIcon from "../assets/ai.png";
+import searchIcon1 from "../assets/SearchAi.png";
+import Logos from "../components/Logos";
 
 const Home = () => {
   return (
@@ -25,13 +26,25 @@ const Home = () => {
 
         <div className="absolute lg:top-[30%] top-[75%] md:top-[80%] w-full flex items-center justify-center gap-3 flex-wrap">
           <button className="px-5 py-2.5 border-2 lg:border-white border-black lg:text-white text-black rounded-[10px] text-[18px] font-light flex gap-2 cursor-pointer">
-            View All Courses <SiViaplay className="w-[30px] h-[30px] lg:fill-white fill-black"/>
+            View All Courses{" "}
+            <SiViaplay className="w-[30px] h-[30px] lg:fill-white fill-black" />
           </button>
           <button className="px-5 py-2.5 lg:bg-white bg-black lg:text-black text-white rounded-[10px] text-[18px] font-light flex gap-2  cursor-pointer items-center justify-center">
-            Search With AI <img src={searchIcon} className="w-[30px] h-[30px] rounded-full hidden lg:block" alt="" /> <img src={searchIcon1} className="w-[35px] h-[35px] rounded-full lg:hidden" alt="" />
+            Search With AI{" "}
+            <img
+              src={searchIcon}
+              className="w-[30px] h-[30px] rounded-full hidden lg:block"
+              alt=""
+            />{" "}
+            <img
+              src={searchIcon1}
+              className="w-[35px] h-[35px] rounded-full lg:hidden"
+              alt=""
+            />
           </button>
         </div>
       </div>
+        <Logos />
     </div>
   );
 };

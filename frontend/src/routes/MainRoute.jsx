@@ -6,19 +6,30 @@ import Login from '../pages/Login'
 import { useSelector } from 'react-redux'
 import Profile from '../pages/Profile'
 import Forget from '../pages/Forget'
+import EditProfile from '../pages/EditProfile'
 
 const MainRoute = () => {
 
   const {userData} = useSelector((state)=> state.user);
   return (
     <Routes>
-      <Route path='/' element={<Home/>}/>
-      <Route path='/register' element={!userData ? <Register/> : <Navigate to="/"/>}/>
-      <Route path='/login' element={<Login/>}/>
-      <Route path='/profile' element={userData ? <Profile/> : <Navigate to="/register" />}/>
-      <Route path='/forget' element={<Forget/>}/>
+      <Route path="/" element={<Home />} />
+      <Route
+        path="/register"
+        element={!userData ? <Register /> : <Navigate to="/" />}
+      />
+      <Route path="/login" element={<Login />} />
+      <Route
+        path="/profile"
+        element={userData ? <Profile /> : <Navigate to="/register" />}
+      />
+      <Route path="/forget" element={<Forget />} />
+      <Route
+        path="/edit-profile"
+        element={userData ? <EditProfile /> : <Navigate to="/register" />}
+      />
     </Routes>
-  )
+  );
 }
 
 export default MainRoute

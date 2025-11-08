@@ -6,7 +6,6 @@ import { Strategy as GoogleStrategy } from "passport-google-oauth20"
 import config from "./config/config.js"
 import cors from "cors"
 
-
 const app = express()
 
 app.use(express.json())

@@ -7,11 +7,13 @@ import {
   registerController,
   resetPassword,
   sendOtp,
+  updateProfile,
   verifyOtp,
 } from "../controllers/auth.controller.js";
 import passport from "passport";
 import { authMiddleware } from "../middlewares/auth.middleware.js";
 import { loginUserValidation, registerUserValidation } from "../middlewares/validator.middleware.js";
+import upload from "../storage/multer.js";
 
 
 const router = express.Router();
@@ -23,6 +25,7 @@ router.get("/get-user", authMiddleware, getUserController)
 router.post("/send-otp",sendOtp);
 router.post("/verify-otp",verifyOtp);
 router.post("/reset-password",resetPassword);
+router.post("/update-profile",authMiddleware,upload.single("photo"),updateProfile);
 
 
 // Google-auth routes
