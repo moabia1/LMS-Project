@@ -1,14 +1,16 @@
-import React from 'react'
-import MainRoute from './routes/MainRoute'
-import getCurrentUser from './customHooks/getCurrentUser'
+import React from "react";
+import MainRoute from "./routes/MainRoute";
+import getCurrentUser from "./customHooks/getCurrentUser";
 
 const App = () => {
   getCurrentUser();
   return (
-    <div>
-      <MainRoute/>
-    </div>
-  )
-}
+    <>
+      <div>
+        <MainRoute />
+      </div>
+    </>
+  );
+};
 
-export default App
+export default App;

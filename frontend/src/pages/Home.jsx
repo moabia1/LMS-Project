@@ -5,6 +5,7 @@ import { SiViaplay } from "react-icons/si";
 import searchIcon from "../assets/ai.png";
 import searchIcon1 from "../assets/SearchAi.png";
 import Logos from "../components/Logos";
+import ExploreCourses from "../components/ExploreCourses";
 
 const Home = () => {
   return (
@@ -44,7 +45,8 @@ const Home = () => {
           </button>
         </div>
       </div>
-        <Logos />
+      <Logos />
+      <ExploreCourses/>
     </div>
   );
 };
