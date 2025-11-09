@@ -5,6 +5,7 @@ import passport from "passport"
 import { Strategy as GoogleStrategy } from "passport-google-oauth20"
 import config from "./config/config.js"
 import cors from "cors"
+import courseRoutes from "./routes/course.routes.js"
 
 const app = express()
 
@@ -33,6 +34,7 @@ passport.use(
 );
 
 
-app.use("/api/auth",authRoutes)
+app.use("/api/auth", authRoutes)
+app.use("/api/course",courseRoutes)
 
 export default app
