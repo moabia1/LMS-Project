@@ -7,24 +7,28 @@ import { ClipLoader } from "react-spinners";
 
 const CreateCourses = () => {
   const navigate = useNavigate();
-  const [title, setTitle] = useState("")
-  const [category, setCategory] = useState("")
-  const [loading, setLoading] = useState(false)
+  const [title, setTitle] = useState("");
+  const [category, setCategory] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handleCreate = async () => {
-    setLoading(true)
+    setLoading(true);
     try {
-      const result = await axiosInstance.post("/course/create", { title, category }, { withCredentials: true })
-      console.log(result)
-      navigate("/courses")
-      setLoading(false)
-      toast.success("Course Created Successfully")
+      const result = await axiosInstance.post(
+        "/course/create",
+        { title, category },
+        { withCredentials: true }
+      );
+      console.log(result);
+      navigate("/courses");
+      setLoading(false);
+      toast.success("Course Created Successfully");
     } catch (error) {
-      setLoading(false)
-      console.log(error)
-      toast.error(error.response.data.message)
+      setLoading(false);
+      console.log(error);
+      toast.error(error.response.data.message);
     }
-  }
+  };
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100 px-4 py-10">
       <div className="max-w-xl w-[600px] mx-auto p-6 bg-white shadow-md rounded-md mt-10 relative ">
@@ -35,9 +39,7 @@ const CreateCourses = () => {
         <h2 className="text-2xl font-semibold mb-6 text-center">
           Create Course
         </h2>
-        <form
-          onSubmit={(e)=>e.preventDefault()}
-          className="space-y-5">
+        <form onSubmit={(e) => e.preventDefault()} className="space-y-5">
           <div>
             <label
               htmlFor="title"
@@ -62,12 +64,12 @@ const CreateCourses = () => {
               Course Category
             </label>
             <select
-              onChange={(e)=>setCategory(e.target.value)}
+              onChange={(e) => setCategory(e.target.value)}
               name=""
               id="category"
               className="w-full border border-gray-300 rounded-md px-4 py-2  focus:outline-none focus:ring-2 focus:ring-black"
             >
-              <option value="">Select Ctaegory</option>
+              <option value="">Select Category</option>
               <option value="App Development">App Development</option>
               <option value="AI/ML">AI/ML</option>
               <option value="Data Science">Data Science</option>
@@ -82,7 +84,10 @@ const CreateCourses = () => {
           <button
             onClick={handleCreate}
             disabled={loading}
-            className="w-full bg-black text-white py-2 px-4 rounded-md active:bg-[#3a3a3a] transition">{loading? <ClipLoader size={30} color="white"/> : "Create"}</button>
+            className="w-full bg-black text-white py-2 px-4 rounded-md active:bg-[#3a3a3a] transition"
+          >
+            {loading ? <ClipLoader size={30} color="white" /> : "Create"}
+          </button>
         </form>
       </div>
     </div>
