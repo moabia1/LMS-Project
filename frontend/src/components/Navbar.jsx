@@ -69,7 +69,10 @@ const Navbar = () => {
           )}
 
           {userData && userData?.role === "educator" && (
-            <div className="px-5 py-2.5 border-2 lg:border-white border-black lg:text-white bg-black text-black rounded-[10px] text-[18px] font-light flex gap-2 cursor-pointer ">
+            <div
+              onClick={() => navigate("/dashboard")}
+              className="px-5 py-2.5 border-2 lg:border-white border-black lg:text-white bg-black text-black rounded-[10px] text-[18px] font-light flex gap-2 cursor-pointer "
+            >
               Dashboard
             </div>
           )}
@@ -98,7 +101,9 @@ const Navbar = () => {
               >
                 My Profile
               </span>
-              <span className="bg-black text-white px-[30px] py-2.5 rounded-2xl hover:bg-gray-600">
+              <span
+                onClick={()=>navigate("/courses")}
+                className="bg-black text-white px-[30px] py-2.5 rounded-2xl hover:bg-gray-600">
                 My Courses
               </span>
             </div>
@@ -148,13 +153,18 @@ const Navbar = () => {
               My Profile
             </div>
 
-            <div className="w-[200px] h-[65px] flex items-center justify-center border-2 border-white bg-black text-white rounded-[10px] text-[18px] font-light cursor-pointer">
+            <div
+              onClick={()=>navigate("/courses")}
+              className="w-[200px] h-[65px] flex items-center justify-center border-2 border-white bg-black text-white rounded-[10px] text-[18px] font-light cursor-pointer">
               My Courses
             </div>
 
             {/* Role by divider */}
             {userData && userData?.role === "educator" && (
-              <div className="w-[200px] h-[65px] flex items-center justify-center border-2 border-white bg-black text-white rounded-[10px] text-[18px] font-light cursor-pointer">
+              <div
+                onClick={() => navigate("/dashboard")}
+                className="w-[200px] h-[65px] flex items-center justify-center border-2 border-white bg-black text-white rounded-[10px] text-[18px] font-light cursor-pointer"
+              >
                 Dashboard
               </div>
             )}

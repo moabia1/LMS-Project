@@ -16,8 +16,8 @@ const router = express.Router();
 
 
 router.post("/create", authMiddleware, createCourse);
-router.get("/get-published", getPublishedCourses);
-router.get("/get-creator", authMiddleware, getCreatorCourses);
+router.get("/published", getPublishedCourses);
+router.get("/creator", authMiddleware, getCreatorCourses);
 router.post(
   "/edit/:courseId",
   authMiddleware,

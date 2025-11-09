@@ -7,6 +7,10 @@ import { useSelector } from 'react-redux'
 import Profile from '../pages/Profile'
 import Forget from '../pages/Forget'
 import EditProfile from '../pages/EditProfile'
+import Dashboard from '../pages/Educator/Dashboard'
+import Courses from '../pages/Educator/Courses'
+import EditCourses from '../pages/Educator/EditCourses'
+import CreateCourses from '../pages/Educator/CreateCourses'
 
 const MainRoute = () => {
 
@@ -27,6 +31,22 @@ const MainRoute = () => {
       <Route
         path="/edit-profile"
         element={userData ? <EditProfile /> : <Navigate to="/register" />}
+      />
+      <Route
+        path="/dashboard"
+        element={userData?.role === "educator" ? <Dashboard /> : <Navigate to="/" />}
+      />
+      <Route
+        path="/edit-course/:courseId"
+        element={userData?.role === "educator" ? <EditCourses /> : <Navigate to="/" />}
+      />
+      <Route
+        path="/courses"
+        element={userData?.role === "educator" ? <Courses /> : <Navigate to="/" />}
+      />
+      <Route
+        path="/create-course"
+        element={userData?.role === "educator" ? <CreateCourses /> : <Navigate to="/register" />}
       />
     </Routes>
   );
