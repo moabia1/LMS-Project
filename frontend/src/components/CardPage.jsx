@@ -19,7 +19,7 @@ const CardPage = () => {
         and unlock opportunity in tech, AI, Business and beyond.
       </span>
 
-      <div className="w-full min-h-screen flex items-center justify-center flex-wrap gap-[50px] lg:p-[50px] md:p-[30px]  p-2.5 mb-10">
+      <div className="w-full flex items-center justify-center flex-wrap gap-[50px] lg:p-[50px] md:p-[30px]  p-2.5 mb-10">
         {popularCourse?.map((course, index) => (
           <Card key={index} thumbnail={course?.thumbnail} title={course?.title} category={course?.category} price={course?.price} id={course?._id}/>
         ))}
