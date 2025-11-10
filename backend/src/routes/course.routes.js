@@ -24,7 +24,7 @@ router.post(
   upload.single("thumbnail"),
   editCourse
 );
-router.get("/:courseId", getCourseById);
+router.get("/:courseId",authMiddleware, getCourseById);
 router.delete("/remove/:courseId", authMiddleware, deleteCourse);
 
 

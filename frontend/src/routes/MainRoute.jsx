@@ -11,6 +11,7 @@ import Dashboard from '../pages/Educator/Dashboard'
 import Courses from '../pages/Educator/Courses'
 import EditCourses from '../pages/Educator/EditCourses'
 import CreateCourses from '../pages/Educator/CreateCourses'
+import AllCourses from '../pages/AllCourses'
 
 const MainRoute = () => {
 
@@ -43,6 +44,10 @@ const MainRoute = () => {
       <Route
         path="/courses"
         element={userData?.role === "educator" ? <Courses /> : <Navigate to="/" />}
+      />
+      <Route
+        path="/all-courses"
+        element={userData ? <AllCourses /> : <Navigate to="/login" />}
       />
       <Route
         path="/create-course"

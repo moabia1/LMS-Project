@@ -25,7 +25,7 @@ export const createCourse = async (req, res) => {
 
 export const getCourseById = async (req, res) => {
   try {
-    const courseId = req.params;
+    const {courseId} = req.params;
 
     if (!courseId) {
       return res.status(400).json({ message: "Something went wrong" });
@@ -80,7 +80,7 @@ export const getCreatorCourses = async (req, res) => {
 
 export const editCourse = async (req, res) => {
   try {
-    const courseId = req.params;
+    const {courseId} = req.params;
 
     const {
       title,
@@ -126,15 +126,15 @@ export const editCourse = async (req, res) => {
 
 export const deleteCourse = async (req, res) => {
   try {
-    const courseId = req.params;
+    const {courseId} = req.params;
 
-    const course = await Course.findById(courseId);
+    let course = await Course.findById(courseId);
 
     if (!course) {
       return res.status(400).json({ message: "Course not found" });
     }
 
-    course = await Course.findByIdAndDelete(courseId, { new: true });
+    await Course.findByIdAndDelete(courseId, { new: true });
     
     return res.status(200).json({message:"Course Deleted Successfully"})
 

@@ -13,7 +13,6 @@ const getCreatorCourse = () => {
       const creatorCourses = async () => {
         try {
           const result = await axiosInstance.get("/course/creator", { withCredentials: true });
-          console.log(result.data)
           dispatch(setCreatorCourse(result.data))
         } catch (error) {
           console.log(error)

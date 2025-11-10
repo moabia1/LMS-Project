@@ -10,7 +10,6 @@ const Courses = () => {
   const navigate = useNavigate();
   getCreatorCourse();
   const { creatorCourse } = useSelector((state) => state.course);
-  console.log(creatorCourse);
 
   return (
     <div className="flex min-h-screen bg-gray-100">

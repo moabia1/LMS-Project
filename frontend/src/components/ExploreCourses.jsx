@@ -8,9 +8,13 @@ import { GiArtificialHive } from "react-icons/gi";
 import { GiMaterialsScience } from "react-icons/gi";
 import { MdOutlineAnalytics } from "react-icons/md";
 import { SiOpenaigym } from "react-icons/si";
+import { useNavigate } from 'react-router-dom';
 
 
 const ExploreCourses = () => {
+
+  const navigate = useNavigate();
+
   return (
     <div className='w-screen min-h-[50vh] lg:h-[50vh] flex flex-col lg:flex-row items-center justify-center px-[30px] gap-4'>
       {/* Left/top div */}
@@ -18,7 +22,9 @@ const ExploreCourses = () => {
         <span className='text-[35px] font-semibold'>Explore</span>
         <span className='text-[35px] font-semibold'>Our Courses</span>
         <p className='text-[17px]'>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Rerum, dicta.</p>
-        <button className='px-5 py-2.5 border-2 bg-black border-white text-white rounded-[10px] text-[18px] font-light flex gap-2 cursor-pointer mt-10'>
+        <button
+          onClick={()=> navigate("/all-courses")}
+          className='px-5 py-2.5 border-2 bg-black border-white text-white rounded-[10px] text-[18px] font-light flex gap-2 cursor-pointer mt-10'>
           Explore Courses <SiViaplay className="w-[30px] h-[30px] fill-white" />
         </button>
       </div>

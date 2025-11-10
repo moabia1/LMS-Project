@@ -1,13 +1,124 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { FaArrowLeftLong } from "react-icons/fa6";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import image from "../../assets/empty.jpg";
 import { FaEdit } from "react-icons/fa";
+import { axiosInstance } from "../../lib/axios";
+import {ClipLoader} from "react-spinners"
+import {toast} from 'react-toastify'
+import { useDispatch, useSelector } from "react-redux";
+import { setCourseData } from "../../store/slices/courseSlice";
 
 const EditCourses = () => {
   const thumb = useRef();
+  const {courseId} = useParams();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
   const [isPublished, setIsPublished] = useState(false);
+  const [selectCourse, setSelectCourse] = useState(null)
+
+  const [title, setTitle] = useState("")
+  const [subTitle, setSubTitle] = useState("")
+  const [description, setDescription] = useState("")
+  const [category, setCategory] = useState("")
+  const [price, setPrice] = useState("")
+  const [level, setLevel] = useState("")
+  const [frontEndImage, setFrontEndImage] = useState(null)
+  const [backendImage, setBackendImage] = useState(null)
+  const [loading, setLoading] = useState(false)
+  const [loading1, setLoading1] = useState(false)
+
+  const { courseData } = useSelector((state) => state.course)
+  
+
+  const handleThumbnail = (e) => {
+    const file = e.target.files[0]
+    setBackendImage(file)
+    setFrontEndImage(URL.createObjectURL(file))
+  }
+
+  const getCourseByID = async () => {
+    try {
+      const result = await axiosInstance.get(`/course/${courseId}`);
+      setSelectCourse(result.data)
+      console.log(result.data)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  useEffect(() => {
+    getCourseByID();
+  }, [])
+  
+  useEffect(() => {
+    if (selectCourse) {
+      setTitle(selectCourse?.title || "")
+      setSubTitle(selectCourse?.subTitle || "")
+      setDescription(selectCourse?.description || "")
+      setCategory(selectCourse?.category || "")
+      setPrice(selectCourse?.price || "")
+      setLevel(selectCourse?.level || "")
+      setFrontEndImage(selectCourse?.thumbnail || image)
+      setIsPublished(selectCourse?.isPublished)
+
+    }
+  }, [selectCourse])
+  
+  const handleEditCourse = async () => {
+    setLoading(true)
+    const formData = new FormData();
+    formData.append("title", title)
+    formData.append("subTitle", subTitle)
+    formData.append("description", description)
+    formData.append("category", category)
+    formData.append("price", price)
+    formData.append("level", level)
+    formData.append("thumbnail", backendImage)
+    formData.append("isPublished", isPublished)
+    try {
+      const result = await axiosInstance.post(`/course/edit/${courseId}`,formData,{withCredentials:true})
+      console.log(result.data)
+
+      const updateData = result.data
+      if (updateData?.isPublished) {
+        const updateCourses = courseData?.map(c => c._id === courseId ? updateData : c);
+        if (!courseData.some(c => c._id === courseId)) {
+          updateCourses.push(updateData)
+        }
+        dispatch(setCourseData(updateCourses))
+      } else {
+        const filterCourse = courseData?.filter((c) => c._id !== courseId);
+        dispatch(setCourseData(filterCourse));
+      }
+
+      setLoading(false)
+      navigate("/courses")
+      toast.success("Course Updated")
+    } catch (error) {
+      console.log("Course editing : ", error)
+      setLoading(false)
+      toast.error(error.response.data.message)  
+    }
+  }
+
+  const handleRemove = async () => {
+    setLoading1(true)
+    try {
+      const result = await axiosInstance.delete(`/course/remove/${courseId}`, { withCredentials: true })
+      console.log(result.data)
+      const filterCourse = courseData?.filter((c) => c._id !== courseId);
+      dispatch(setCourseData(filterCourse));
+      setLoading1(false)
+      navigate("/courses")
+      toast.success("Course Removed")
+    } catch (error) {
+      console.log("Course removed :", error)
+      setLoading1(false)
+      toast.error(error.response.data.message)
+    }
+  }
 
   return (
     <div className="max-w-5xl mx-auto p-6 mt-10 bg-white rounded-lg shadow-md">
@@ -50,14 +161,15 @@ const EditCourses = () => {
               Click to Unpublish
             </button>
           )}
-          <button className="bg-red-600 text-white px-4 py-2 rounded-md ">
-            Remove Course
+          <button
+            onClick={handleRemove}
+            className="bg-red-600 text-white px-4 py-2 rounded-md "
+          >
+            {loading1 ? <ClipLoader size={30} color="white" /> : "Remove Course"}
           </button>
         </div>
 
-        <form
-          onSubmit={(e)=>e.preventDefault()}
-          className="space-y-6">
+        <form onSubmit={(e) => e.preventDefault()} className="space-y-6">
           {/* Title */}
           <div>
             <label
@@ -67,6 +179,8 @@ const EditCourses = () => {
               Title
             </label>
             <input
+              onChange={(e) => setTitle(e.target.value)}
+              value={title}
               className="w-full border px-4 py-2 rounded-md"
               type="text"
               id="title"
@@ -83,6 +197,8 @@ const EditCourses = () => {
               Subtitle
             </label>
             <input
+              onChange={(e) => setSubTitle(e.target.value)}
+              value={subTitle}
               className="w-full border px-4 py-2 rounded-md"
               type="text"
               id="subtitle"
@@ -99,6 +215,8 @@ const EditCourses = () => {
               Description
             </label>
             <textarea
+              onChange={(e) => setDescription(e.target.value)}
+              value={description}
               className="w-full border px-4 py-2 rounded-md h-24 resize-none"
               type="text"
               id="description"
@@ -116,6 +234,8 @@ const EditCourses = () => {
                 Course Category
               </label>
               <select
+                onChange={(e) => setCategory(e.target.value)}
+                value={category}
                 id=""
                 className="w-full border px-4 py-2 rounded-md bg-white"
               >
@@ -141,6 +261,8 @@ const EditCourses = () => {
                 Course Level
               </label>
               <select
+                onChange={(e) => setLevel(e.target.value)}
+                value={level}
                 id=""
                 className="w-full border px-4 py-2 rounded-md bg-white"
               >
@@ -160,6 +282,8 @@ const EditCourses = () => {
                 Course Price (INR)
               </label>
               <input
+                onChange={(e) => setPrice(e.target.value)}
+                value={price}
                 type="number"
                 id="price"
                 className="w-full border px-4 py-2 rounded-md"
@@ -176,13 +300,19 @@ const EditCourses = () => {
             >
               Course Thumbnail
             </label>
-            <input type="file" hidden ref={thumb} accept="image/*" />
+            <input
+              type="file"
+              hidden
+              ref={thumb}
+              onChange={handleThumbnail}
+              accept="image/*"
+            />
           </div>
 
           {/* Thumbnail Reference */}
           <div className="relative w-[300px] h-[170px]">
             <img
-              src={image}
+              src={frontEndImage ? frontEndImage : image}
               alt=""
               onClick={() => thumb.current.click()}
               className="w-full h-full border border-black rounded-[5px] "
@@ -200,8 +330,11 @@ const EditCourses = () => {
             >
               Cancel
             </button>
-            <button className="bg-black text-white px-7 py-2 rounded-md hover:bg-gray-500 cursor-pointer">
-              Save
+            <button
+              onClick={handleEditCourse}
+              className="bg-black text-white px-7 py-2 rounded-md hover:bg-gray-500 cursor-pointer"
+            >
+              {loading ? <ClipLoader size={30} color="white" /> : "Save"}
             </button>
           </div>
         </form>

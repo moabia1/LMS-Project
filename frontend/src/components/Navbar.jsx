@@ -102,7 +102,6 @@ const Navbar = () => {
                 My Profile
               </span>
               <span
-                onClick={()=>navigate("/courses")}
                 className="bg-black text-white px-[30px] py-2.5 rounded-2xl hover:bg-gray-600">
                 My Courses
               </span>
