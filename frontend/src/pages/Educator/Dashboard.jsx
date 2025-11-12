@@ -40,7 +40,7 @@ const Dashboard = () => {
             <p></p>
             <h1
               className="px-2.5 text-center py-2.5 border-2 bg-black border-black text-white rounded-xl text-[15px] font-light flex items-center justify-center cursor-pointer"
-              onClick={() => navigate("/create-course")}
+              onClick={() => navigate("/courses")}
             >
               Create Courses
             </h1>

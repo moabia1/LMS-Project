@@ -12,6 +12,8 @@ import Courses from '../pages/Educator/Courses'
 import EditCourses from '../pages/Educator/EditCourses'
 import CreateCourses from '../pages/Educator/CreateCourses'
 import AllCourses from '../pages/AllCourses'
+import CreateLecture from '../pages/Educator/CreateLecture'
+import EditLectures from '../pages/Educator/EditLectures'
 
 const MainRoute = () => {
 
@@ -38,10 +40,6 @@ const MainRoute = () => {
         element={userData?.role === "educator" ? <Dashboard /> : <Navigate to="/" />}
       />
       <Route
-        path="/edit-course/:courseId"
-        element={userData?.role === "educator" ? <EditCourses /> : <Navigate to="/" />}
-      />
-      <Route
         path="/courses"
         element={userData?.role === "educator" ? <Courses /> : <Navigate to="/" />}
       />
@@ -52,6 +50,18 @@ const MainRoute = () => {
       <Route
         path="/create-course"
         element={userData?.role === "educator" ? <CreateCourses /> : <Navigate to="/register" />}
+      />
+      <Route
+        path="/edit-course/:courseId"
+        element={userData?.role === "educator" ? <EditCourses /> : <Navigate to="/" />}
+      />
+      <Route
+        path="/create-lecture/:courseId"
+        element={userData?.role === "educator" ? <CreateLecture /> : <Navigate to="/courses" />}
+      />
+      <Route
+        path="/edit-lecture/:lectureId"
+        element={userData?.role === "educator" ? <EditLectures /> : <Navigate to="/courses" />}
       />
     </Routes>
   );

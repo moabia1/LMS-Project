@@ -48,8 +48,8 @@ export const getLecture = async (req, res) => {
 
 export const editLecture = async (req, res) => {
   try {
-    const { lectureId } = req.params;
-    const { isPreviewFree, title } = req.body;
+    const { lectureId, title } = req.params;
+    const { isPreviewFree } = req.body;
 
     const lecture = await Lecture.findById(lectureId);
     if (!lecture) {
