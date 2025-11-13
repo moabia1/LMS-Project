@@ -48,8 +48,8 @@ export const getLecture = async (req, res) => {
 
 export const editLecture = async (req, res) => {
   try {
-    const { lectureId, title } = req.params;
-    const { isPreviewFree } = req.body;
+    const { lectureId } = req.params;
+    const { isPreviewFree, title } = req.body;
 
     const lecture = await Lecture.findById(lectureId);
     if (!lecture) {
@@ -81,7 +81,7 @@ export const removeLecture = async (req, res) => {
 
     let lecture = await Lecture.findByIdAndDelete(lectureId);
 
-    if (lecture) {
+    if (!lecture) {
       return res.status(404).json({ message: "Course not found" });
     }
 

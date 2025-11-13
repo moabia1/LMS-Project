@@ -102,8 +102,9 @@ const CreateLecture = () => {
         <div className="space-y-2">
           {lectureData?.map((lecture, index) => (
             <div key={index} className="bg-gray-100 rounded-md flex items-center justify-between p-3 text-sm font-medium text-gray-700">
-              <span>Lecture - {index + 1}:{lecture?.title}</span>
+              <span>Lecture - {index + 1}: {lecture?.title}</span>
               <FaEdit
+                onClick={()=>navigate(`/edit-lecture/${lecture._id}`)}
                 className="text-gray-500 hover:text-gray-700 cursor-pointer" />
             </div>
           ))}
