@@ -5,6 +5,7 @@ import {
   deleteCourse,
   editCourse,
   getCourseById,
+  getCreator,
   getCreatorCourses,
   getPublishedCourses,
 } from "../controllers/course.controller.js";
@@ -26,7 +27,7 @@ router.post(
 );
 router.get("/:courseId",authMiddleware, getCourseById);
 router.delete("/remove/:courseId", authMiddleware, deleteCourse);
-
+router.post("/creator",authMiddleware,getCreator)
 
 
 export default router;

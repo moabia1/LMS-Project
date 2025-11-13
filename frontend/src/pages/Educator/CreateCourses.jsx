@@ -84,7 +84,7 @@ const CreateCourses = () => {
           <button
             onClick={handleCreate}
             disabled={loading}
-            className="w-full bg-black text-white py-2 px-4 rounded-md active:bg-[#3a3a3a] transition"
+            className="w-full bg-black text-white py-2 px-4 rounded-md active:bg-[#3a3a3a] transition cursor-pointer"
           >
             {loading ? <ClipLoader size={30} color="white" /> : "Create"}
           </button>

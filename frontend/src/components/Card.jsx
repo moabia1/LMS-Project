@@ -1,9 +1,13 @@
 import React from 'react'
 import { FaStar } from "react-icons/fa";
+import { useNavigate } from 'react-router-dom';
 
-const Card = ({thumbnail,title,category,price,id}) => {
+const Card = ({ thumbnail, title, category, price, id }) => {
+  
+  const navigate = useNavigate();
+
   return (
-    <div className="max-w-sm w-full bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-lg transition-all duration-300 border border-gray-300">
+    <div className="max-w-sm w-full bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-lg transition-all duration-300 border border-gray-300 cursor-pointer" onClick={()=>navigate(`/view-course/${id}`)}>
       <img src={thumbnail} alt="" className="w-full h-48 object-cover" />
 
       <div className="p-5 space-y-2">
@@ -13,7 +17,7 @@ const Card = ({thumbnail,title,category,price,id}) => {
         </span>
 
         <div className="flex justify-between text-sm text-gray-600 mt-3 px-2.5">
-          <span className="font-semibold text-gray-800">₹ {price}</span>
+          <span className="font-semibold text-gray-800">₹ {price ? price : "599"}</span>
           <span className="flex items-center gap-1">
             <FaStar className="text-yellow-500" />
           </span>

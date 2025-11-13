@@ -1,5 +1,6 @@
 import Course from "../models/course.model.js";
 import uploadOnCloudinary from "../storage/cloudinary.js";
+import User from "../models/user.model.js"
 
 export const createCourse = async (req, res) => {
   try {
@@ -43,7 +44,7 @@ export const getCourseById = async (req, res) => {
 
 export const getPublishedCourses = async (req, res) => {
   try {
-    const courses = await Course.find({ isPublished: true });
+    const courses = await Course.find({ isPublished: true }).populate("lectures");
 
     if (!courses) {
       return res.status(400).json({ message: "Courses not found !!" });
@@ -142,3 +143,19 @@ export const deleteCourse = async (req, res) => {
     return res.status(500).json({ message: `Course Deletion Failed: ${error}` });
   }
 };
+
+export const getCreator = async (req, res) => {
+  try {
+    const {userId} = req.body;
+
+    const user = await User.findById(userId).select("-password")
+    
+    if (!user) {
+      return res.status(400).json({message: "User not found"})
+    }
+
+    return res.status(200).json(user)
+  } catch (error) {
+    console.log("GetCreator :",error)
+  }
+}
