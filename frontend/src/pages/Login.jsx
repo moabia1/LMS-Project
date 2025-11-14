@@ -9,6 +9,7 @@ import { toast } from 'react-toastify';
 import {ClipLoader} from "react-spinners"
 import { useDispatch } from 'react-redux';
 import { setUserData } from '../store/slices/userSlice';
+import { FaArrowLeftLong } from "react-icons/fa6";
 
 
 const Login = () => {
@@ -41,13 +42,14 @@ const Login = () => {
   }
 
   return (
-    <div className="bg-[#dddbdb] w-[100vw] h-[100vh] flex items-center justify-center">
+    <div className="bg-[#dddbdb] w-screen h-screen flex items-center justify-center">
       <form
         onSubmit={submitHandler}
-        className="w-[90%] md:w-200 h-150 bg-[white] shadow-xl rounded-2xl flex"
+        className="w-[90%] md:w-200 h-150 bg-[white] shadow-xl rounded-2xl flex relative"
       >
+        <FaArrowLeftLong className="absolute top-[16%] left-[5%] w-[22px] h-[22px] cursor-pointer" onClick={()=>navigate('/')} />
         {/* Left Div */}
-        <div className="md:w-[50%] w-[100%] flex flex-col items-center justify-center gap-3">
+        <div className="md:w-[50%] w-full flex flex-col items-center justify-center gap-3">
           <div>
             <h1 className="font-semibold text-black text-2xl">
               Welcome Back !

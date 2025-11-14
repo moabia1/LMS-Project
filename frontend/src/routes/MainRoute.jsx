@@ -16,6 +16,7 @@ import CreateLecture from '../pages/Educator/CreateLecture'
 import EditLectures from '../pages/Educator/EditLectures'
 import ViewCourse from '../pages/ViewCourse'
 import ViewLectures from '../pages/ViewLectures'
+import MyEnrolledCourses from '../pages/MyEnrolledCourses'
 
 const MainRoute = () => {
 
@@ -72,6 +73,10 @@ const MainRoute = () => {
       <Route
         path="/view-lecture/:courseId"
         element={userData ? <ViewLectures /> : <Navigate to="/" />}
+      />
+      <Route
+        path="/my-courses"
+        element={userData ? <MyEnrolledCourses /> : <Navigate to="/" />}
       />
     </Routes>
   );

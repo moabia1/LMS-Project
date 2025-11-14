@@ -113,7 +113,7 @@ export const loginController = async (req, res) => {
 export const getUserController = async (req, res) => {
   const id = req.id;
 
-  const user = await User.findById(id);
+  const user = await User.findById(id).select("-password").populate("enrolledCourses")
 
   if (!user) {
     return res.status(400).json({ message: "User not Found" });
