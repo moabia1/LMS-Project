@@ -9,6 +9,7 @@ import { FaPlayCircle } from "react-icons/fa";
 import { FaLock } from "react-icons/fa";
 import { axiosInstance } from "../lib/axios";
 import Card from "../components/Card"
+import {toast} from "react-toastify"
 
 const ViewCourse = () => {
   const navigate = useNavigate();
@@ -16,9 +17,11 @@ const ViewCourse = () => {
   const { courseId } = useParams();
   const { courseData } = useSelector((state) => state.course);
   const { selectedCourse } = useSelector((state) => state.course);
+  const {userData} = useSelector(state => state.user)
   const [selectedLecture, setSelectedLecture] = useState(null);
   const [creatorData, setCreatorData] = useState(null);
   const [creatorCourses, setCreatorCourses] = useState(null);
+  const [isEnroll, setIsEnroll] = useState(false)
 
   const fetchCourseData = async () => {
     courseData.map((course) => {
@@ -51,9 +54,19 @@ const ViewCourse = () => {
     handleCreator();
   }, [selectedCourse]);
 
+  
+  
+  const checkEnrollment = () => {
+    const verify = userData?.enrolledCourses?.some(c => (typeof c === 'string' ? c : c._id).toString() === courseId?.toString());
+    if (verify) {
+      setIsEnroll(true)
+    }
+  }
+
   useEffect(() => {
     fetchCourseData();
-  }, [courseData, courseId]);
+    checkEnrollment()
+  }, [courseData, courseId,userData]);
 
   useEffect(() => {
     if (creatorData?._id && courseData.length > 0) {
@@ -64,6 +77,47 @@ const ViewCourse = () => {
       setCreatorCourses(creatorCourse);
     }
   }, []);
+
+  const handleEnroll = async (userId, courseId) => {
+    try {
+      const orderData = await axiosInstance.post(
+        "/payment/create",
+        { userId, courseId },
+        { withCredentials: true }
+      );
+
+      const options = {
+        key: import.meta.env.VITE_RAZORPAY_KEY_ID,
+        amount: orderData.data.amount,
+        currency: "INR",
+        name: "Skill Nest",
+        description: "Course Enrollment Payment",
+        order_id: orderData.data.id,
+        handler: async function (response) {
+          console.log("Razorpay_response : ", response);
+          try {
+            const verifyPayment = await axiosInstance.post("/payment/verify", { ...response, userId, courseId }, { withCredentials: true })
+            setIsEnroll(true)
+            toast.success(verifyPayment.data.message)
+          } catch (error) {
+            console.log(error.response.data.message)
+            toast.error("Something went wrong while enrolling")
+          }
+        },
+      };
+
+      if (!window.Razorpay) {
+        console.log("Razorpay SDK not loaded");
+        return;
+      }
+
+      const rzp = new window.Razorpay(options);
+      rzp.open();
+    } catch (error) {
+      console.log("Handle Enroll :", error);
+    }
+  };
+
 
   return (
     <div className="min-h-screen bg-gray-50 p-6">
@@ -114,9 +168,22 @@ const ViewCourse = () => {
                 <li>✅ 10+ hours of video content</li>
                 <li>✅ Lifetime access to course materials</li>
               </ul>
-              <button className="bg-black text-white px-6 py-2 rounded hover:bg-gray-700 mt-3 cursor-pointer">
-                Enroll now
-              </button>
+
+              {!isEnroll ? (
+                <button
+                  onClick={() => handleEnroll(userData._id, courseId)}
+                  className="bg-black text-white px-6 py-2 rounded hover:bg-gray-700 mt-3 cursor-pointer"
+                >
+                  Enroll now
+                </button>
+              ) : (
+                <button
+                  onClick={() => navigate(`/view-lecture/${courseId}`)}
+                  className="bg-green-100 text-green-500 px-6 py-2 rounded hover:bg-gray-700 mt-3 cursor-pointer"
+                >
+                  Watch now
+                </button>
+              )}
             </div>
           </div>
         </div>
