@@ -59,7 +59,7 @@ const SearchWithAi = () => {
     <div className="min-h-screen bg-linear-to-br from-black to-gray-900 text-white flex flex-col items-center px-4 py-16">
       {/* seach container */}
       <div className="bg-white shadow-xl rounded-3xl p-6 sm:p-8 w-full max-w-2xl text-center relative">
-        <FaArrowLeftLong className="text-black w-5  h-5 cursor-pointer absolute" />
+        <FaArrowLeftLong onClick={()=>navigate(-1)} className="text-black w-5  h-5 cursor-pointer absolute" />
         <h1 className="text-2xl sm:text-3xl font-bold text-gray-600 mb-6 flex items-center justify-center gap-2">
           <img src={ai} alt="" className="w-8 h-8 sm:w-[30px] sm:h-[30px]" />{" "}
           Search With <span className="text-[#CB99C7]">AI</span>
