@@ -8,6 +8,7 @@ import cors from "cors"
 import courseRoutes from "./routes/course.routes.js"
 import lectureRoutes from "./routes/lecture.routes.js"
 import paymentRoutes from "./routes/payment.routes.js"
+import reviewRoutes from "./routes/review.routes.js"
 
 const app = express()
 
@@ -39,6 +40,7 @@ passport.use(
 app.use("/api/auth", authRoutes)
 app.use("/api/course",courseRoutes)
 app.use("/api/lecture", lectureRoutes)
-app.use("/api/payment",paymentRoutes)
+app.use("/api/payment", paymentRoutes)
+app.use("/api/review",reviewRoutes)
 
 export default app
