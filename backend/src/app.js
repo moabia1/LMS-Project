@@ -18,7 +18,7 @@ app.use(cookieParser())
 app.use(passport.initialize())
 app.use(
   cors({
-    origin: "https://skill-nest-course.vercel.app/",
+    origin: "https://skill-nest-course.vercel.app",
     credentials: true,
   })
 );
