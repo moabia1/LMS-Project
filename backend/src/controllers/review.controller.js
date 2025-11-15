@@ -35,7 +35,7 @@ export const createReview = async (req, res) => {
 export const getReview = async (req, res) => {
   try {
     const review = await Review.find({})
-      .populate("user", "fullName avatar role")
+      .populate("user course")
       .sort({ reviewdAt: -1 });
     
     return res.status(200).json(review)
