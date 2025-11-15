@@ -126,7 +126,8 @@ const Login = () => {
           {/* Google icon with button */}
           <div
             onClick={() => {
-              window.location.href = "http://localhost:5000/api/auth/google";
+              window.location.href =
+                "https://lms-project-wqss.onrender.com/api/auth/google";
             }}
             className="w-[80%] h-10 border border-black rounded-xs flex items-center justify-center hover:border-2 cursor-pointer"
           >

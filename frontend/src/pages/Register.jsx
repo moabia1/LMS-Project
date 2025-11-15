@@ -184,7 +184,8 @@ const Register = () => {
           {/* Google Login */}
           <div
             onClick={() =>
-              (window.location.href = "http://localhost:5000/api/auth/google")
+              (window.location.href =
+                "https://lms-project-wqss.onrender.com/api/auth/google")
             }
             className="w-full h-11 border border-black rounded-md flex items-center justify-center gap-2 cursor-pointer hover:bg-gray-100"
           >

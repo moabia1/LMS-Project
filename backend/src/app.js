@@ -16,17 +16,20 @@ app.use(express.json())
 app.use(express.urlencoded({extended:true}))
 app.use(cookieParser())
 app.use(passport.initialize())
-app.use(cors({
-  origin: "http://localhost:5173",
-  credentials: true
-}))
+app.use(
+  cors({
+    origin: "https://skill-nest-course.vercel.app/",
+    credentials: true,
+  })
+);
 
 passport.use(
   new GoogleStrategy(
     {
       clientID: config.CLIENT_ID,
       clientSecret: config.CLIENT_SECRET,
-      callbackURL: "/api/auth/google/callback",
+      callbackURL:
+        "https://lms-project-wqss.onrender.com/api/auth/google/callback",
     },
     (accessToken, refreshToken, profile, done) => {
       // Here, you would typically find or create a user in your database
