@@ -44,7 +44,9 @@ const Home = () => {
           </button>
 
           {/* Search with AI */}
-          <button className="px-5 py-2.5 lg:bg-white bg-black lg:text-black text-white rounded-[10px] text-[18px] font-light flex gap-2  cursor-pointer items-center justify-center">
+          <button
+            onClick={()=>navigate("/search")}
+            className="px-5 py-2.5 lg:bg-white bg-black lg:text-black text-white rounded-[10px] text-[18px] font-light flex gap-2  cursor-pointer items-center justify-center">
             Search With AI{" "}
             <img
               src={searchIcon}

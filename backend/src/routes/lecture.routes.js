@@ -6,7 +6,7 @@ import {
   getLecture,
   removeLecture,
 } from "../controllers/lecture.controller.js";
-import upload from "../storage/multer.js";
+import upload from "../services/multer.js";
 
 const router = express.Router();
 

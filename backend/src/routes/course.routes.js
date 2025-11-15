@@ -9,12 +9,10 @@ import {
   getCreatorCourses,
   getPublishedCourses,
 } from "../controllers/course.controller.js";
-import upload from "../storage/multer.js";
-
-
+import upload from "../services/multer.js";
+import { searchWithAi } from "../controllers/aisearch.controller.js";
 
 const router = express.Router();
-
 
 router.post("/create", authMiddleware, createCourse);
 router.get("/published", getPublishedCourses);
@@ -25,9 +23,11 @@ router.post(
   upload.single("thumbnail"),
   editCourse
 );
-router.get("/:courseId",authMiddleware, getCourseById);
+router.get("/:courseId", authMiddleware, getCourseById);
 router.delete("/remove/:courseId", authMiddleware, deleteCourse);
-router.post("/creator",authMiddleware,getCreator)
+router.post("/creator", authMiddleware, getCreator);
 
+// For ai search
+router.post("/search", searchWithAi);
 
 export default router;

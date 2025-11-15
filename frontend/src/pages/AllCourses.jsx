@@ -66,7 +66,9 @@ const AllCourses = () => {
           className="space-y-4 text-sm bg-gray-600 border-white text-white border p-5 rounded-2xl"
         >
           {/* AI Button */}
-          <button className="px-3 py-2 bg-black text-white rounded-[10px] text-[15px] font-light flex items-center justify-center gap-2 cursor-pointer">
+          <button
+            onClick={()=>navigate("/search")}
+            className="px-3 py-2 bg-black text-white rounded-[10px] text-[15px] font-light flex items-center justify-center gap-2 cursor-pointer">
             Search with AI{" "}
             <img src={ai} className="w-[30px] h-[30px] rounded-full" alt="" />
           </button>

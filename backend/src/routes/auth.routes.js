@@ -12,21 +12,27 @@ import {
 } from "../controllers/auth.controller.js";
 import passport from "passport";
 import { authMiddleware } from "../middlewares/auth.middleware.js";
-import { loginUserValidation, registerUserValidation } from "../middlewares/validator.middleware.js";
-import upload from "../storage/multer.js";
-
+import {
+  loginUserValidation,
+  registerUserValidation,
+} from "../middlewares/validator.middleware.js";
+import upload from "../services/multer.js";
 
 const router = express.Router();
 
-router.post("/register",registerUserValidation,registerController);
-router.post("/login",loginUserValidation,loginController);
+router.post("/register", registerUserValidation, registerController);
+router.post("/login", loginUserValidation, loginController);
 router.get("/logout", logoutController);
-router.get("/get-user", authMiddleware, getUserController)
-router.post("/send-otp",sendOtp);
-router.post("/verify-otp",verifyOtp);
-router.post("/reset-password",resetPassword);
-router.post("/update-profile",authMiddleware,upload.single("photo"),updateProfile);
-
+router.get("/get-user", authMiddleware, getUserController);
+router.post("/send-otp", sendOtp);
+router.post("/verify-otp", verifyOtp);
+router.post("/reset-password", resetPassword);
+router.post(
+  "/update-profile",
+  authMiddleware,
+  upload.single("photo"),
+  updateProfile
+);
 
 // Google-auth routes
 router.get(

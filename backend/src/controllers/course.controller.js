@@ -1,6 +1,6 @@
 import Course from "../models/course.model.js";
-import uploadOnCloudinary from "../storage/cloudinary.js";
-import User from "../models/user.model.js"
+import uploadOnCloudinary from "../services/storage.service.js";
+import User from "../models/user.model.js";
 
 export const createCourse = async (req, res) => {
   try {
@@ -26,7 +26,7 @@ export const createCourse = async (req, res) => {
 
 export const getCourseById = async (req, res) => {
   try {
-    const {courseId} = req.params;
+    const { courseId } = req.params;
 
     if (!courseId) {
       return res.status(400).json({ message: "Something went wrong" });
@@ -44,7 +44,9 @@ export const getCourseById = async (req, res) => {
 
 export const getPublishedCourses = async (req, res) => {
   try {
-    const courses = await Course.find({ isPublished: true }).populate("lectures reviews");
+    const courses = await Course.find({ isPublished: true }).populate(
+      "lectures reviews"
+    );
 
     if (!courses) {
       return res.status(400).json({ message: "Courses not found !!" });
@@ -81,7 +83,7 @@ export const getCreatorCourses = async (req, res) => {
 
 export const editCourse = async (req, res) => {
   try {
-    const {courseId} = req.params;
+    const { courseId } = req.params;
 
     const {
       title,
@@ -127,7 +129,7 @@ export const editCourse = async (req, res) => {
 
 export const deleteCourse = async (req, res) => {
   try {
-    const {courseId} = req.params;
+    const { courseId } = req.params;
 
     let course = await Course.findById(courseId);
 
@@ -136,26 +138,27 @@ export const deleteCourse = async (req, res) => {
     }
 
     await Course.findByIdAndDelete(courseId, { new: true });
-    
-    return res.status(200).json({message:"Course Deleted Successfully"})
 
+    return res.status(200).json({ message: "Course Deleted Successfully" });
   } catch (error) {
-    return res.status(500).json({ message: `Course Deletion Failed: ${error}` });
+    return res
+      .status(500)
+      .json({ message: `Course Deletion Failed: ${error}` });
   }
 };
 
 export const getCreator = async (req, res) => {
   try {
-    const {userId} = req.body;
+    const { userId } = req.body;
 
-    const user = await User.findById(userId).select("-password")
-    
+    const user = await User.findById(userId).select("-password");
+
     if (!user) {
-      return res.status(400).json({message: "User not found"})
+      return res.status(400).json({ message: "User not found" });
     }
 
-    return res.status(200).json(user)
+    return res.status(200).json(user);
   } catch (error) {
-    console.log("GetCreator :",error)
+    console.log("GetCreator :", error);
   }
-}
+};

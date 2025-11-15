@@ -17,6 +17,7 @@ import EditLectures from '../pages/Educator/EditLectures'
 import ViewCourse from '../pages/ViewCourse'
 import ViewLectures from '../pages/ViewLectures'
 import MyEnrolledCourses from '../pages/MyEnrolledCourses'
+import SearchWithAi from '../pages/SearchWithAi'
 
 const MainRoute = () => {
 
@@ -77,6 +78,10 @@ const MainRoute = () => {
       <Route
         path="/my-courses"
         element={userData ? <MyEnrolledCourses /> : <Navigate to="/" />}
+      />
+      <Route
+        path="/search"
+        element={userData ? <SearchWithAi /> : <Navigate to="/" />}
       />
     </Routes>
   );

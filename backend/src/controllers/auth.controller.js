@@ -1,10 +1,10 @@
 import User from "../models/user.model.js";
 import bcrypt from "bcryptjs";
 import jwtGenerator from "../utils/jwtToken.js";
-import jwt from "jsonwebtoken"
+import jwt from "jsonwebtoken";
 import sendEmail from "../config/sendMail.js";
-import uploadOnCloudinary from "../storage/cloudinary.js";
-import config from "../config/config.js"
+import uploadOnCloudinary from "../services/storage.service.js";
+import config from "../config/config.js";
 
 export const registerController = async (req, res) => {
   const {
@@ -73,16 +73,16 @@ export const googleAuthCallback = async (req, res) => {
   });
 
   const token = jwt.sign({ id: newUser._id }, config.JWT_SECRET, {
-      expiresIn:"3d"
-  })
-  
+    expiresIn: "3d",
+  });
+
   res.cookie("token", token, {
-      httpOnly: true,
-      maxAge: 3 * 24 * 60 * 60 * 1000,
-      sameSite: "None",
-      secure: true,
-  })
-  
+    httpOnly: true,
+    maxAge: 3 * 24 * 60 * 60 * 1000,
+    sameSite: "None",
+    secure: true,
+  });
+
   return res.redirect("http://localhost:5173");
 };
 
@@ -113,7 +113,9 @@ export const loginController = async (req, res) => {
 export const getUserController = async (req, res) => {
   const id = req.id;
 
-  const user = await User.findById(id).select("-password").populate("enrolledCourses")
+  const user = await User.findById(id)
+    .select("-password")
+    .populate("enrolledCourses");
 
   if (!user) {
     return res.status(400).json({ message: "User not Found" });
@@ -194,7 +196,6 @@ export const resetPassword = async (req, res) => {
 };
 
 export const updateProfile = async (req, res) => {
-
   try {
     const userId = req.id;
 
@@ -211,9 +212,9 @@ export const updateProfile = async (req, res) => {
     };
 
     if (avatar) {
-      updateData.avatar = avatar
+      updateData.avatar = avatar;
     }
-    
+
     const user = await User.findByIdAndUpdate(userId, updateData, {
       new: true,
     });
@@ -222,7 +223,7 @@ export const updateProfile = async (req, res) => {
       return res.status(400).json({ message: "User not found" });
     }
 
-    await user.save()
+    await user.save();
     return res.status(200).json(user);
   } catch (error) {
     console.log("Profile Updating : ", error);

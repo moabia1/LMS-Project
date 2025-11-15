@@ -1,6 +1,6 @@
 import Course from "../models/course.model.js";
 import Lecture from "../models/lecture.model.js";
-import uploadOnCloudinary from "../storage/cloudinary.js";
+import uploadOnCloudinary from "../services/storage.service.js";
 
 export const createLecture = async (req, res) => {
   try {
@@ -90,8 +90,8 @@ export const removeLecture = async (req, res) => {
       { $pull: { lectures: lectureId } }
     );
 
-    return res.status(200).json({message: "Lecture Removed!"})
+    return res.status(200).json({ message: "Lecture Removed!" });
   } catch (error) {
-    console.log("Remove Lecture :",error)
+    console.log("Remove Lecture :", error);
   }
 };
