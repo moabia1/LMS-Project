@@ -71,7 +71,7 @@ const SearchWithAi = () => {
             type="text"
             onChange={(e) => setInput(e.target.value)}
             value={input}
-            className="flex-grow px-4 py-3 bg-transparent text-white placeholder-gray-400 focus:outline-none text-sm sm:text-base"
+            className="grow px-4 py-3 bg-transparent text-white placeholder-gray-400 focus:outline-none text-sm sm:text-base"
             placeholder="What do you want to learn? (e.g. AI, MERN, Cloud...)"
           />
 

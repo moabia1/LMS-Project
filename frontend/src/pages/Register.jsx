@@ -53,168 +53,164 @@ const Register = () => {
   };
 
   return (
-    <div className="bg-[#dddbdb] w-[100vw] h-[100vh] flex items-center justify-center">
+    <div className="bg-[#dddbdb] w-screen h-screen flex items-center justify-center p-4">
       <form
         onSubmit={submitHandler}
-        className="w-[90%] md:w-200 h-150 bg-[white] shadow-xl rounded-2xl flex"
+        className="
+        w-full max-w-4xl 
+        h-full md:h-[90vh] 
+        bg-white shadow-xl rounded-2xl 
+        flex flex-col md:flex-row 
+        overflow-y-auto
+      "
       >
-        {/* Left Div */}
-        <div className="md:w-[50%] w-[100%] flex flex-col items-center justify-center gap-3">
-          <div>
-            <h1 className="font-semibold text-black text-2xl">
-              Let's get started
-            </h1>
-            <h2 className="text-[#999797] text-[18px]">Create your Account</h2>
+        {/* LEFT SECTION */}
+        <div className="md:w-1/2 w-full px-8 py-2 flex flex-col items-center gap-4">
+          {/* Heading Section */}
+          <div className="w-full text-center">
+            <h1 className="font-bold text-3xl text-black">Let’s get started</h1>
+            <h2 className="text-gray-600 text-lg mt-1">Create your account</h2>
           </div>
 
-          {/* First & Last Name */}
-          <div className="flex flex-col gap-1 w-[80%] items-start justify-center px-3">
-            <label htmlFor="first Name" className="font-semibold">
-              First Name
-            </label>
-            <input
-              type="text"
-              id="first Name"
-              value={firstName}
-              onChange={(e) => setFirstName(e.target.value)}
-              className="border w-[100%] h-[35px] border-[#e7e6e6] text-[15px] px-5"
-              placeholder="First Name"
-            />
-            <label htmlFor="last Name" className="font-semibold">
-              Last Name
-            </label>
-            <input
-              type="text"
-              id="last Name"
-              value={lastName}
-              onChange={(e) => setLastName(e.target.value)}
-              className="border w-[100%] h-[35px] border-[#e7e6e6] text-[15px] px-5"
-              placeholder="Last Name"
-            />
+          {/* INPUTS */}
+          <div className="w-full grid grid-cols-1 sm:grid-cols-2 gap-2 -mt-1">
+            <div className="flex flex-col gap-0.5">
+              <label className="font-semibold">First Name</label>
+              <input
+                type="text"
+                value={firstName}
+                onChange={(e) => setFirstName(e.target.value)}
+                className="border h-11 border-gray-300 rounded px-4"
+                placeholder="First Name"
+              />
+            </div>
+
+            <div className="flex flex-col gap-0.5">
+              <label className="font-semibold">Last Name</label>
+              <input
+                type="text"
+                value={lastName}
+                onChange={(e) => setLastName(e.target.value)}
+                className="border h-11 border-gray-300 rounded px-4"
+                placeholder="Last Name"
+              />
+            </div>
           </div>
 
-          {/* Username */}
-          <div className="flex flex-col gap-1 w-[80%] items-start justify-center px-3">
-            <label htmlFor="username" className="font-semibold">
-              Username
-            </label>
+          <div className="w-full flex flex-col gap-0.5">
+            <label className="font-semibold">Username</label>
             <input
               type="text"
-              id="username"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
-              className="border-1 w-[100%] h-[35px] border-[#e7e6e6] text-[15px] px-5"
+              className="border h-11 border-gray-300 rounded px-4"
               placeholder="Enter username"
             />
           </div>
 
-          {/* Email */}
-          <div className="flex flex-col gap-1 w-[80%] items-start justify-center px-3">
-            <label htmlFor="email" className="font-semibold">
-              Email
-            </label>
+          <div className="w-full flex flex-col gap-0.5">
+            <label className="font-semibold">Email</label>
             <input
               type="email"
-              id="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="border-1 w-[100%] h-[35px] border-[#e7e6e6] text-[15px] px-5"
+              className="border h-11 border-gray-300 rounded px-4"
               placeholder="Your Email"
             />
           </div>
 
           {/* Password */}
-          <div className="flex flex-col gap-1 w-[80%] items-start justify-center px-3 relative">
-            <label htmlFor="password" className="font-semibold">
-              Password
-            </label>
+          <div className="w-full flex flex-col gap-0.5 relative">
+            <label className="font-semibold">Password</label>
             <input
               type={showPassword ? "text" : "password"}
-              id="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="border w-[100%] h-[35px] border-[#e7e6e6] text-[15px] px-5"
-              placeholder="Enter Your Password"
+              className="border h-11 border-gray-300 rounded px-4"
+              placeholder="Enter your password"
             />
             {showPassword ? (
               <IoEye
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute w-5 h-5 cursor-pointer right-[5%] bottom-[10%]"
+                className="absolute right-4 top-11 text-xl cursor-pointer"
               />
             ) : (
               <IoEyeOff
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute w-5 h-5 cursor-pointer right-[5%] bottom-[10%]"
+                className="absolute right-4 top-11 text-xl cursor-pointer"
               />
             )}
           </div>
 
           {/* Role */}
-          <div className="flex md:w-[50%] w-[70%] items-center justify-between">
+          <div className="flex items-center justify-center gap-6 pt-0.5">
             <span
               onClick={() => setRole("student")}
-              className={`px-2.5 py-1.5 border-2 border-[#e7e6e6] rounded-2xl cursor-pointer hover:border-black ${
-                role == "student" ? "border-black" : "border-[#646464]"
+              className={`px-2 py-1 border-2 rounded-2xl cursor-pointer ${
+                role === "student"
+                  ? "border-black font-semibold"
+                  : "border-gray-400"
               }`}
             >
               Student
             </span>
             <span
               onClick={() => setRole("educator")}
-              className={`px-2.5 py-1.5 border-2 border-[#e7e6e6] rounded-2xl cursor-pointer hover:border-black ${
-                role == "educator" ? "border-black" : "border-[#646464]"
+              className={`px-2 py-1 border-2 rounded-2xl cursor-pointer ${
+                role === "educator"
+                  ? "border-black font-semibold"
+                  : "border-gray-400"
               }`}
             >
               Educator
             </span>
           </div>
 
-          {/* Submit Button */}
+          {/* Submit */}
           <button
             disabled={loading}
-            className="w-[80%] h-10 bg-black text-white cursor-pointer flex items-center justify-center rounded-[5px]"
+            className="w-full h-16 bg-black text-white rounded-md flex items-center justify-center mt-1 text-lg cursor-pointer"
           >
-            {loading ? <ClipLoader color="white" size={30} /> : "Register"}
+            {loading ? <ClipLoader color="white" size={28} /> : "Register"}
           </button>
 
-          {/* Continue Google button */}
-          <div className="w-[80%] flex items-center gap-2">
-            <div className="w-[25%] h-[0.5px] bg-[#c4c4c4]"></div>
-            <div className="w-[50%] text-[15px] text-[#6f6f6f] flex items-center justify-center">
-              Or Continue
-            </div>
-            <div className="w-[25%] h-[0.5px] bg-[#c4c4c4]"></div>
+          {/* Divider */}
+          <div className="flex items-center gap-3 w-full mt-1">
+            <div className="flex-1 h-px bg-gray-300"></div>
+            <span className="text-gray-600 text-sm">Or Continue</span>
+            <div className="flex-1 h-px bg-gray-300"></div>
           </div>
 
-          {/* Google icon with button */}
+          {/* Google Login */}
           <div
-            onClick={() => {
-              window.location.href = "http://localhost:5000/api/auth/google";
-            }}
-            className="w-[80%] h-10 border border-black rounded-xs flex items-center justify-center hover:border-2 cursor-pointer"
+            onClick={() =>
+              (window.location.href = "http://localhost:5000/api/auth/google")
+            }
+            className="w-full h-11 border border-black rounded-md flex items-center justify-center gap-2 cursor-pointer hover:bg-gray-100"
           >
-            <img src={google} alt="" className="w-[30px]" />
-            <span className="text-[18px] text-gray-500">oogle</span>
+            <img src={google} alt="" className="w-6" />
+            <span className="text-gray-700 text-base">
+              Continue with Google
+            </span>
           </div>
-          <span className="text-[#6f6f6f]">
-            Already have an account ?{" "}
-            <Link
-              to="/login"
-              className="underline underline-offset-1 text-black"
-            >
-              login
+
+          <div className="text-gray-600 text-sm mt-0">
+            Already have an account?{" "}
+            <Link to="/login" className="underline text-black">
+              Login
             </Link>
-          </span>
+          </div>
         </div>
 
-        {/* Right Div */}
-        <div className="w-[50%] h-[100%] rounded-r-2xl bg-[black] md:flex items-center justify-center flex-col hidden">
-          <img src={logo} alt="logo" className="w-30 shadow-2xl" />
-          <span className="text-2xl text-white">SKILL NEST</span>
+        {/* Right Section */}
+        <div className="hidden md:flex w-1/2 bg-black items-center justify-center flex-col p-10">
+          <img src={logo} alt="logo" className="w-40 mb-4" />
+          <span className="text-3xl text-white font-semibold">SKILL NEST</span>
         </div>
       </form>
     </div>
   );
+
 };
 
 export default Register;
