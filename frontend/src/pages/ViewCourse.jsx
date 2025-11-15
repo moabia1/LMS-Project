@@ -8,8 +8,10 @@ import { FaStar } from "react-icons/fa";
 import { FaPlayCircle } from "react-icons/fa";
 import { FaLock } from "react-icons/fa";
 import { axiosInstance } from "../lib/axios";
-import Card from "../components/Card"
-import {toast} from "react-toastify"
+import Card from "../components/Card";
+import { toast } from "react-toastify";
+import { ClipLoader } from "react-spinners";
+import getAllReviews from "../customHooks/getAllReviews";
 
 const ViewCourse = () => {
   const navigate = useNavigate();
@@ -17,14 +19,17 @@ const ViewCourse = () => {
   const { courseId } = useParams();
   const { courseData } = useSelector((state) => state.course);
   const { selectedCourse } = useSelector((state) => state.course);
-  const {userData} = useSelector(state => state.user)
+  const { userData } = useSelector((state) => state.user);
   const [selectedLecture, setSelectedLecture] = useState(null);
   const [creatorData, setCreatorData] = useState(null);
   const [creatorCourses, setCreatorCourses] = useState(null);
-  const [isEnroll, setIsEnroll] = useState(false)
+  const [isEnroll, setIsEnroll] = useState(false);
+  const [rating, setRating] = useState(0);
+  const [comment, setComment] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const fetchCourseData = async () => {
-    courseData.map((course) => {
+    courseData?.map((course) => {
       if (course?._id === courseId) {
         dispatch(setSelectedCourse(course));
 
@@ -54,19 +59,20 @@ const ViewCourse = () => {
     handleCreator();
   }, [selectedCourse]);
 
-  
-  
   const checkEnrollment = () => {
-    const verify = userData?.enrolledCourses?.some(c => (typeof c === 'string' ? c : c._id).toString() === courseId?.toString());
+    const verify = userData?.enrolledCourses?.some(
+      (c) =>
+        (typeof c === "string" ? c : c._id).toString() === courseId?.toString()
+    );
     if (verify) {
-      setIsEnroll(true)
+      setIsEnroll(true);
     }
-  }
+  };
 
   useEffect(() => {
     fetchCourseData();
-    checkEnrollment()
-  }, [courseData, courseId,userData]);
+    checkEnrollment();
+  }, [courseData, courseId, userData]);
 
   useEffect(() => {
     if (creatorData?._id && courseData.length > 0) {
@@ -96,12 +102,16 @@ const ViewCourse = () => {
         handler: async function (response) {
           console.log("Razorpay_response : ", response);
           try {
-            const verifyPayment = await axiosInstance.post("/payment/verify", { ...response, userId, courseId }, { withCredentials: true })
-            setIsEnroll(true)
-            toast.success(verifyPayment.data.message)
+            const verifyPayment = await axiosInstance.post(
+              "/payment/verify",
+              { ...response, userId, courseId },
+              { withCredentials: true }
+            );
+            setIsEnroll(true);
+            toast.success(verifyPayment.data.message);
           } catch (error) {
-            console.log(error.response.data.message)
-            toast.error("Something went wrong while enrolling")
+            console.log(error.response.data.message);
+            toast.error("Something went wrong while enrolling");
           }
         },
       };
@@ -118,7 +128,38 @@ const ViewCourse = () => {
     }
   };
 
+  const handleReview = async () => {
+    setLoading(true);
+    try {
+      const result = await axiosInstance.post(
+        "/review/create",
+        { rating, comment, courseId },
+        { withCredentials: true }
+      );
+      console.log(result);
+      setLoading(false);
+      toast.success("Review Added");
+      setRating(0);
+      setComment("");
+    } catch (error) {
+      console.log(error);
+      setLoading(false);
+      setRating(0);
+      setComment("");
+      toast.error(error.response.data.message);
+    }
+  };
 
+  const calculateAvgReview = (reviews) => {
+    if (!reviews || reviews.length === 0) {
+      return 0;
+    }
+    const total = reviews.reduce((sum, review) => sum + review?.rating, 0);
+    return (total / reviews.length).toFixed(1);
+  };
+  const avgRating = calculateAvgReview(selectedCourse?.reviews);
+
+  
   return (
     <div className="min-h-screen bg-gray-50 p-6">
       <div className="max-w-6xl mx-auto bg-white shadow-md rounded-xl p-6 space-y-6 relative">
@@ -149,7 +190,8 @@ const ViewCourse = () => {
               {/* Rating */}
               <div className="text-yellow-500 font-medium flex gap-2">
                 <span className="flex items-center justify-start gap-1">
-                  <FaStar />5
+                  <FaStar />
+                  {avgRating}
                 </span>
                 <span className="text-gray-400 ">(1,200 Reviews)</span>
               </div>
@@ -270,16 +312,32 @@ const ViewCourse = () => {
           <div className="mb-4">
             <div className="flex gap-1 mb-2">
               {[1, 2, 3, 4, 5].map((star) => (
-                <FaStar key={star} className="fill-gray-300" />
+                <FaStar
+                  onClick={() => setRating(star)}
+                  key={star}
+                  className={
+                    star <= rating ? "fill-amber-300" : "fill-gray-300"
+                  }
+                />
               ))}
             </div>
             <textarea
+              onChange={(e) => setComment(e.target.value)}
+              value={comment}
               placeholder="Write your review here..."
               className="w-full border border-gray-300 rounded-lg p-2"
               rows={3}
             />
-            <button className="bg-black text-white mt-3 px-4 py-2 rounded hover:bg-gray-800">
-              Submit Review
+            <button
+              onClick={handleReview}
+              disabled={loading}
+              className="bg-black text-white mt-3 px-4 py-2 rounded hover:bg-gray-800"
+            >
+              {loading ? (
+                <ClipLoader size={30} color="white" />
+              ) : (
+                "Submit Review"
+              )}
             </button>
           </div>
         </div>

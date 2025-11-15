@@ -193,6 +193,7 @@ const AllCourses = () => {
             category={course?.category}
             price={course?.price}
             id={course?._id}
+            review={course?.reviews}
           />
         ))}
       </main>

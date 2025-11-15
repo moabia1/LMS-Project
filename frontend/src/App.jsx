@@ -4,11 +4,13 @@ import getCurrentUser from "./customHooks/getCurrentUser";
 import getCreatorCourse from "./customHooks/getCreatorCourse";
 import getPublishedCourse from "./customHooks/getPublishedCourse";
 import ScrollToTop from "./components/ScrollToTop";
+import getAllReviews from "./customHooks/getAllReviews";
 
 const App = () => {
   getCurrentUser();
   getCreatorCourse();
   getPublishedCourse();
+  getAllReviews()
   return (
     <>
       <ScrollToTop/>

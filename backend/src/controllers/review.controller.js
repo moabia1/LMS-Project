@@ -22,7 +22,6 @@ export const createReview = async (req, res) => {
       rating: rating,
       comment:comment
     })
-    await review.save()
     await course.reviews.push(review._id)
     await course.save()
 
@@ -35,10 +34,12 @@ export const createReview = async (req, res) => {
 
 export const getReview = async (req, res) => {
   try {
-    const review = await Review.find({}).populate("user", "fullName", "avatar", "role").sort({ reviewdAt: -1 })
+    const review = await Review.find({})
+      .populate("user", "fullName avatar role")
+      .sort({ reviewdAt: -1 });
     
     return res.status(200).json(review)
   } catch (error) {
-    
+    console.log("get review :",error)
   }
 }
