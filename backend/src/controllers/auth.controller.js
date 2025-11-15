@@ -58,7 +58,7 @@ export const googleAuthCallback = async (req, res) => {
       secure: true,
     });
 
-    return res.redirect("http://localhost:5173");
+    return res.redirect("https://skill-nest-course.vercel.app");
   }
 
   const newUser = await User.create({
@@ -83,7 +83,7 @@ export const googleAuthCallback = async (req, res) => {
     secure: true,
   });
 
-  return res.redirect("http://localhost:5173");
+  return res.redirect("https://skill-nest-course.vercel.app");
 };
 
 export const loginController = async (req, res) => {
