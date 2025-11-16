@@ -35,7 +35,7 @@ const EditLectures = () => {
       console.log(result.data)
       dispatch(setLectureData([...lectureData, result.data]))
       toast.success("Lecture updated")
-      navigate("/courses")
+      navigate(-1)
       setLoading(false)
     } catch (error) {
       console.log(error)
